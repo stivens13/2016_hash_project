@@ -10,6 +10,9 @@
 #include <array>
 
 #define MIN_TABLE_SIZE 10
+#define k 7919 
+#define a 321
+#define b 43112
 using namespace std;
 
 enum EntryType {Legitimate, Empty, Deleted};
@@ -31,23 +34,24 @@ struct HashTable
     HashNode *table;
 };
 
-int HashFunc1(string str, int size) {
-    int hash = 0;
-    for (int i = 0; i < str.length(); i++) {
-        hash += str.at(i);
-    }
-    hash = hash * 3;
-    hash = hash / 2;
-    hash << 2;
-    for (int i = 0; i < str.length() - 1; i++) {
-        if (str.at(i + 1) > str.at(i))
-            hash += str.at(i + 1);
-    }
-    hash = hash * 7;
-    hash = hash % size - 1;
-    return hash;
+// Universal Hash Function
+int HashFunc1(string text, int size) {
+  int i;
+  long long  res = 0;
+  long long M = (size * k);
+  int s=text.size();
+  for(i = s-1; i >= 0; i--)
+  {
+    res = a * (res * 256 + (int)text[i]);
+    //cout<<"res before modulo = "<<res<<endl;
+    res=res % M;
+    //cout<<"res after modulo = "<<res<<endl;
+  }
+    long long res1 = (res + b) / k;
+    return res1;
 }
 
+// Regular Prime Hash Function
 int HashFunc2(string str, int size) {
     unsigned int hash = 0;
     unsigned int prime_one   = 10103;
@@ -129,7 +133,7 @@ HashTable *Rehash(HashTable *htable)
         if (table[i].info == Legitimate)
             Insert(table[i].element, htable);
     }
-    free(table);
+    //delete(table);
     return htable;
 }
 /*
