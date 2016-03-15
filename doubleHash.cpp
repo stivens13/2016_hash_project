@@ -155,6 +155,14 @@ void Retrieve(HashTable *htable)
     }
  
 }
+
+HashNode* getItem(string key, HashTable *htable) {
+    int pos = Find(key, htable);
+    if (htable->table[pos].info == Legitimate) {
+        return &htable->table[pos];
+    }
+    return nullptr;
+}
 /*
  * Main Contains Menu
  */
@@ -173,7 +181,8 @@ int main()
         cout<<"2.Insert element into the table"<<endl;
         cout<<"3.Display Hash Table"<<endl;
         cout<<"4.Rehash The Table"<<endl;
-        cout<<"5.Exit"<<endl;
+        cout<<"5.Find Item"<<endl;
+        cout<<"6.Exit"<<endl;
         cout<<"Enter your choice: ";
         cin>>choice;
         switch(choice)
@@ -200,7 +209,15 @@ int main()
         case 4:
             htable = Rehash(htable);
             break;
-        case 5:
+        case 5: {
+            cout<<"Enter element to search: ";
+            cin>>value;
+            HashNode *hold = getItem(value, htable);
+            if (hold != nullptr) {
+                cout << "Name: " << hold->element << " Student Id: " << hold->studentId << endl;
+            }}
+            break;
+        case 6:
             exit(1);
         default:
            cout<<"\nEnter correct option\n";
