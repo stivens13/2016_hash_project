@@ -25,6 +25,7 @@ struct Student {
 struct HashNode
 {
     string element;
+    int studentId;
     enum EntryType info;
 };
 
@@ -111,13 +112,14 @@ int Find(string key, HashTable *htable)
 /*
  * Function to Insert Element into the table
  */
-void Insert(string key, HashTable *htable)
+void Insert(string key, int ID, HashTable *htable)
 {
     int pos = Find(key, htable);
     if (htable->table[pos].info != Legitimate )
     {
         htable->table[pos].info = Legitimate;
         htable->table[pos].element = key;
+        htable->table[pos].studentId = ID;
     }
 }
 /*
@@ -131,7 +133,7 @@ HashTable *Rehash(HashTable *htable)
     for (int i = 0; i < size; i++)
     {
         if (table[i].info == Legitimate)
-            Insert(table[i].element, htable);
+            Insert(table[i].element, table[i].studentId, htable);
     }
     //delete(table);
     return htable;
@@ -144,10 +146,12 @@ void Retrieve(HashTable *htable)
     for (int i = 0; i < htable->size; i++)
     {
         string value = htable->table[i].element;
+        int studentId = htable->table[i].studentId;
         if (value == "NULL")
             cout<<"Position: "<<i + 1<<" Element: Null"<<endl;
-        else
-            cout<<"Position: "<<i + 1<<" Element: "<<value<<endl;
+        else {
+            cout<<"Position: "<<i + 1<<" Name: "<<value<<" "<<"ID: "<<studentId<<endl;
+        }
     }
  
 }
@@ -187,7 +191,7 @@ int main()
             }
         	cout<<"Enter element to be inserted: ";
         	cin>>value;
-            Insert(value, htable);
+            Insert(value, 12512, htable);
             i++;
             break;
         case 3:
