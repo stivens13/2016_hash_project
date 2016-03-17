@@ -7,9 +7,13 @@
 #include <list>
 #include <vector>
 #include <fstream>
-#include "fibo_header.h"
 
 using namespace std;
+
+const int DEFAULT_SIZE = 1000;
+
+const double W = pow( 2, 64 );
+
 
 template <typename Key, typename Value>
 class Entry
@@ -18,7 +22,7 @@ private:
 
 	Key key;
 	Value item;
-	
+
 public:
 	Entry() {}
 	Entry( Value new_entry, Key item_key ): item( new_entry ), key( item_key ) {}
@@ -35,7 +39,7 @@ public:
 
 	bool operator>( const Entry<Key, Value>& rightHandItem ) const { return ( key > rightHandItem.getKey() ); }
 
-}; 
+};
 
 
 template<typename Key, typename Value>
@@ -43,13 +47,9 @@ class HashEntry: public Entry<Key, Value>
 
 {
 private:
-
-	Entry<Key, Value> entry;
 	HashEntry<Key, Value>* next;
-	
-public:
 
-	//HashEntry(): next(nullptr) {}
+public:
 
 	HashEntry()
 	{
@@ -72,50 +72,69 @@ public:
 	void setNext( HashEntry<Key, Value>* nextEntryPtr )
 	{
 		next = nextEntryPtr;
-	}  // end 
+	}  //
 	HashEntry<Key, Value>* HashEntry<Key, Value>::getNext() const
 	{
 		return next;
-	}  // end 
+	}   
 
 };
 
 template<typename Key, typename Value>
-class FibonacciTable// : public FibonacciTableInterface<T,R>
+class FibonacciTable
 
-{	
+{
 	HashEntry<Key, Value>** fibonacci_table;
 
-	int current_size;
+	int size;
 
-	double golden_middle;
+	double A;
 
 	int item_count;
 
-	//void rehash() {};
+	int col;
 
 public:
 
-	FibonacciTable(): current_size( 0 ), golden_middle( get_golden_ratio() ) {}
+	FibonacciTable()
+		
+		/*size( DEFAULT_SIZE / 0.5 ),
+		A( get_golden_ratio() ),
+		col(0)
+		*/
+
+	{
+		size = (int) DEFAULT_SIZE * 2;
+		A = get_golden_ratio();
+		col = 0;
+		fibonacci_table = new HashEntry<Key, Value>*[size];
+		for( int c = 0; c < size; c++ )
+			fibonacci_table[c] = nullptr;
+
+		cout << "Size: " << size << endl;
+	}
 
 	void insert( Key& a_key, Value& object )
 
 	{
+
 		HashEntry<Key, Value>* nu = new HashEntry<Key, Value>( a_key, object );
 
-		a_key = hash( a_key );
+		int hashed_key = hash( a_key );
 
-		
-		if( fibonacci_table[a_key] == nullptr )
-			fibonacci_table[a_key] = nu;
+		if( fibonacci_table[hashed_key] == nullptr )
+			fibonacci_table[hashed_key] = nu;
 
 		else
-			fibonacci_table[a_key]->setNext( nu );
-			
 
-		//shared_ptr
-
+		{
+			fibonacci_table[hashed_key]->setNext( nu );
+			cout << "collision " << a_key << endl;
+			col++;
+		}
 	}
+
+	void print_col() { cout << col << endl; }
 
 	bool is_empty() { return item_count == 0; }
 
@@ -124,19 +143,19 @@ public:
 	int hash( Key& key )
 
 	{
-		int c2 = 0x27d4eb2d; 
+		key = (int) floor( size * ( key * A - floor( key * A ) ) );
 
-		key = ( key ^ 61 ) ^ ( key >> 16 );
-		key = key + ( key << 3 );
-		key = key ^ ( key >> 4 );
-		key = key * c2;
-		key = key ^ ( key >> 15 );
-
-		key %= 1000;
-
-		cout << key << endl;
+		//key = floor( size * ( key * A % 1 ) );
 
 		return key;
+	}
+
+	string search( Key key )
+
+	{
+		int hash_key = hash( key );
+
+		return fibonacci_table[hash_key]->getItem();
 	}
 
 };
@@ -202,7 +221,7 @@ public:
 	}
 };
 
-
+/*
 int main()
 
 {
@@ -212,7 +231,16 @@ int main()
 
 	reader.getData( table );
 
+	cout << "Number of collisions: ";
+	
+	table.print_col();
+
+	cout << table.search( 56 ) << endl;
+
+	cout << table.search( 894 ) << endl;
+
 	system( "pause" );
 
 	return 0;
 }
+*/
