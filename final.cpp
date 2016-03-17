@@ -624,69 +624,89 @@ class HashEntry: public Entry<Key, Value>
 {
 private:
 
-	Entry<Key, Value> entry;
+	//Entry<Key, Value> entry;
 	HashEntry<Key, Value>* next;
 
 public:
+
+	//HashEntry(): next(nullptr) {}
 
 	HashEntry()
 	{
 		Entry<Key, Value>();
 		next = nullptr;
-	}  // end
-
+	}  // end 
 	HashEntry( Key itemKey, Value newEntry )
 	{
 		Entry<Key, Value>::setItem( newEntry );
 		Entry<Key, Value>::setKey( itemKey );
 		next = nullptr;
-	}  // end
-
+	}  // end 
 	HashEntry( HashEntry<Key, Value>* nextEntryPtr )
 	{
 		Entry<Key, Value>::setItem( newEntry );
 		Entry<Key, Value>::setKey( itemKey );
 		next = nextEntryPtr;
-	}  // end
+	}  // end 
 
 	void setNext( HashEntry<Key, Value>* nextEntryPtr )
 	{
 		next = nextEntryPtr;
-	}  // end
-
+	}  // end 
 	HashEntry<Key, Value>* HashEntry<Key, Value>::getNext() const
 	{
 		return next;
-	}  // end
+	}  // end 
 
 };
 
 template<typename Key, typename Value>
-class FibonacciTable
+class FibonacciTable// : public FibonacciTableInterface<T,R>
 
 {
 	HashEntry<Key, Value>** fibonacci_table;
 
-	int current_size;
+	//int size_min;
+
+	int size;
 
 	double A;
 
 	int item_count;
 
+	int col;
+
 public:
 
-	FibonacciTable(): current_size( 0 ), A( get_golden_ratio() ) {}
+	FibonacciTable()
+
+		/*size( DEFAULT_SIZE / 0.5 ),
+		A( get_golden_ratio() ),
+		col(0)
+		*/
+
+	{
+		size = (int)DEFAULT_SIZE * 2;
+		//size = DEFAULT_SIZE;
+		A = get_golden_ratio();
+		col = 0;
+		fibonacci_table = new HashEntry<Key, Value>*[size];
+		for( int c = 0; c < size; c++ )
+			fibonacci_table[c] = nullptr;
+
+		cout << "Size: " << size << endl;
+	}
 
 	void insert( Key& a_key, Value& object )
 
 	{
+
 		HashEntry<Key, Value>* nu = new HashEntry<Key, Value>( a_key, object );
 
-		a_key = hash( a_key );
+		int hashed_key = hash( a_key );
 
-
-		if( fibonacci_table[a_key] == nullptr )
-			fibonacci_table[a_key] = nu;
+		if( fibonacci_table[hashed_key] == nullptr )
+			fibonacci_table[hashed_key] = nu;
 
 		else
 
@@ -697,6 +717,8 @@ public:
 		}
 	}
 
+	void print_col() { cout << col << endl; }
+
 	bool is_empty() { return item_count == 0; }
 
 	double get_golden_ratio() { return ( sqrt( 5 ) - 1 ) / 2; }
@@ -705,6 +727,8 @@ public:
 
 	{
 		key = (int)floor( size * ( key * A - floor( key * A ) ) );
+
+		//key = floor( size * ( key * A % 1 ) );
 
 		return key;
 	}
@@ -780,285 +804,287 @@ public:
 ====================================        Dharma        ===================================================
 */
 
+/*
 template <typename T>
 class DHashTable
 {
-	T* hashTable;
-	int size;
-	int collisions;
-	int values[256];
-	int valuesCount[256];
-	vector<Student> collided;
+T* hashTable;
+int size;
+int collisions;
+int values[256];
+int valuesCount[256];
+vector<Student> collided;
 
 public:
-	DHashTable( int size1 )
-	{
-		size = size1;
-		hashTable = new T[size + 1];
-		for( int i = 0; i < 256; i++ )
-		{
-			values[i] = 1;
-		}
-	}
-	~DHashTable() { delete[] hashTable; }
-	void GetData( vector<T>& vdata, bool easy )
-	{
-		InitializeHashTable( vdata, easy );
-		CheckCollisions();
-	}
+DHashTable( int size1 )
+{
+size = size1;
+hashTable = new T[size + 1];
+for( int i = 0; i < 256; i++ )
+{
+values[i] = 1;
+}
+}
+~DHashTable() { delete[] hashTable; }
+void GetData( vector<T>& vdata, bool easy )
+{
+InitializeHashTable( vdata, easy );
+CheckCollisions();
+}
 
-	// If "easy" = true, this uses the hardcoded perfect hashing function
-	int InitializeHashTable( vector<T>& vdata, bool easy )
-	{
-		for( int index = 0; index < size; index++ )
-		{
-			hashTable[index] = { "NULL", NULL };
-		}
+// If "easy" = true, this uses the hardcoded perfect hashing function
+int InitializeHashTable( vector<T>& vdata, bool easy )
+{
+for( int index = 0; index < size; index++ )
+{
+hashTable[index] = { "NULL", NULL };
+}
 
-		if( !easy )
-		{
-			setValues( vdata );
-			return -1;
-		}
-		for( T data : vdata )
-		{
-			int index = easyHashGenerator( data.name );
-			//cout << "INDEX " << index << " item " << hashTable[index] << endl;
-			if( hashTable[index].name.compare( "NULL" ) != 0 )
-			{
-				collisions++;
-				collided.push_back( hashTable[index] );
-			}
-			hashTable[index] = data;
-		}
-		return collisions;
-	}
-	double CheckCollisions()
-	{
-		double percent = double( collisions ) / double( size ) * 100;
-		cout << "Percentage of collisions " << percent << "%" << endl;
-		return percent;
-	}
+if( !easy )
+{
+setValues( vdata );
+return -1;
+}
+for( T data : vdata )
+{
+int index = easyHashGenerator( data.name );
+//cout << "INDEX " << index << " item " << hashTable[index] << endl;
+if( hashTable[index].name.compare( "NULL" ) != 0 )
+{
+collisions++;
+collided.push_back( hashTable[index] );
+}
+hashTable[index] = data;
+}
+return collisions;
+}
+double CheckCollisions()
+{
+double percent = double( collisions ) / double( size ) * 100;
+cout << "Percentage of collisions " << percent << "%" << endl;
+return percent;
+}
 
-	//The "easy" hash generator
-	int easyHashGenerator( string str )
-	{
-		if( str == "Jimmy" )
-			return 4;
-		else if( str == "Dharma" )
-			return 3;
-		else if( str == "Anna" )
-			return 2;
-		else if( str == "Nikita" )
-			return 1;
-		else if( str == "Viktoria" )
-			return 0;
-		return 5;
-	}
+//The "easy" hash generator
+int easyHashGenerator( string str )
+{
+if( str == "Jimmy" )
+return 4;
+else if( str == "Dharma" )
+return 3;
+else if( str == "Anna" )
+return 2;
+else if( str == "Nikita" )
+return 1;
+else if( str == "Viktoria" )
+return 0;
+return 5;
+}
 
-	//This is the "smarter" perfect hashing function/searching function I wrote
-	Student cichelliSearch( string name )
-	{
-		return hashTable[calculateKey( name )];
-	}
+//This is the "smarter" perfect hashing function/searching function I wrote
+Student cichelliSearch( string name )
+{
+return hashTable[calculateKey( name )];
+}
 
-	//This is for the "dumber"" one
-	Student easySearch( string name )
-	{
-		return hashTable[easyHashGenerator( name )];
-	}
-	void Traverse( string str, int index )
-	{
-		if( index < size )
-		{
-			index++;
-			if( str.compare( "NULL" ) != 0 )
-				cout << str << endl;
-			Traverse( hashTable[index], index );
-		}
-	}
-	string operator[] ( int index )
-	{
-		return hashTable[index];
-	}
-	int hashInsert( string str )
-	{
-		int i = 0;
-		do
-		{
-			if( hashTable[key].compare( "NULL" ) == 0 )
-			{
-				hashTable[i] = str;
-				return i;
-			}
-			else
-				i++;
-		} while( i < size );
-		return -1;
-	}
-	bool hashRemove( string str )
-	{
-		int i = 0;
-		do
-		{
-			if( hashTable[i].compare( str ) == 0 )
-			{
-				hashTable[i] = "NULL";
-				return true;
-			}
-			else
-				i++;
-		} while( i < size );
-		return false;
-	}
-	void printCollisions()
-	{
-		for( int i = 0; i < collided.size(); i++ )
-		{
-			cout << collided[i] << "  ";
-		}
-		cout << endl;
-	}
-	void print()
-	{
-		for( int i = 0; i < size; i++ )
-		{
-			cout << hashTable[i].name << "   " << hashTable[i].studentId << endl;
-		}
-	}
+//This is for the "dumber"" one
+Student easySearch( string name )
+{
+return hashTable[easyHashGenerator( name )];
+}
+void Traverse( string str, int index )
+{
+if( index < size )
+{
+index++;
+if( str.compare( "NULL" ) != 0 )
+cout << str << endl;
+Traverse( hashTable[index], index );
+}
+}
+string operator[] ( int index )
+{
+return hashTable[index];
+}
+int hashInsert( string str )
+{
+int i = 0;
+do
+{
+if( hashTable[key].compare( "NULL" ) == 0 )
+{
+hashTable[i] = str;
+return i;
+}
+else
+i++;
+} while( i < size );
+return -1;
+}
+bool hashRemove( string str )
+{
+int i = 0;
+do
+{
+if( hashTable[i].compare( str ) == 0 )
+{
+hashTable[i] = "NULL";
+return true;
+}
+else
+i++;
+} while( i < size );
+return false;
+}
+void printCollisions()
+{
+for( int i = 0; i < collided.size(); i++ )
+{
+cout << collided[i] << "  ";
+}
+cout << endl;
+}
+void print()
+{
+for( int i = 0; i < size; i++ )
+{
+cout << hashTable[i].name << "   " << hashTable[i].studentId << endl;
+}
+}
 
-	int calculateKey( string str )
-	{
-		int key = 0;
-		for( char c : str )
-		{
-			key += values[c];
-		}
-		return key % size;
-	}
-	void setValues( vector<T> vec )
-	{
-		for( T data : vec )
-		{
-			for( char c : data.name )
-			{
-				valuesCount[c] ++;
-			}
-		}
+int calculateKey( string str )
+{
+int key = 0;
+for( char c : str )
+{
+key += values[c];
+}
+return key % size;
+}
+void setValues( vector<T> vec )
+{
+for( T data : vec )
+{
+for( char c : data.name )
+{
+valuesCount[c] ++;
+}
+}
 
-		for( T data : vec )
-		{
-			int key = calculateKey( data.name );
-			//cout << "HEREH " << key << endl;
+for( T data : vec )
+{
+int key = calculateKey( data.name );
+//cout << "HEREH " << key << endl;
 
-			if( hashTable[key].name == "NULL" )
-			{
-				hashTable[key] = data;
-			}
-			else
-			{
-				int i;
-				while( hashTable[key].name != "NULL" )
-				{
-					i = 0;
-					//check the letter does not affect any other words
-					while( valuesCount[data.name.at( i )] != 1 )
-					{
-						i++;
-					}
-					values[data.name.at( i )] ++;
-					key = calculateKey( data.name );
-				}
-				hashTable[key] = data;
-			}
+if( hashTable[key].name == "NULL" )
+{
+hashTable[key] = data;
+}
+else
+{
+int i;
+while( hashTable[key].name != "NULL" )
+{
+i = 0;
+//check the letter does not affect any other words
+while( valuesCount[data.name.at( i )] != 1 )
+{
+i++;
+}
+values[data.name.at( i )] ++;
+key = calculateKey( data.name );
+}
+hashTable[key] = data;
+}
 
-		}
+}
 
-	}
+}
 };
+
 
 template <typename T>
 class D2HashTable
 {
 private:
 
-	Node** hashTable;
-	int values[256];
-	int size;
+Node** hashTable;
+int values[256];
+int size;
 public:
-	D2HashTable( int size1 ) {
-		size = size1;
-		hashTable = new Node *[size + 1];
-	}
+D2HashTable( int size1 ) {
+size = size1;
+hashTable = new Node *[size + 1];
+}
 
-	~D2HashTable() { delete[] hashTable; }
+~D2HashTable() { delete[] hashTable; }
 
-	void GetData( vector<T> &vdata, bool easy ) {
-		InitializeD2HashTable( vdata, easy );
-		CheckCollisions();
-	}
+void GetData( vector<T> &vdata, bool easy ) {
+InitializeD2HashTable( vdata, easy );
+CheckCollisions();
+}
 
-	void InitializeD2HashTable( vector<T> &vdata ) {
-		for( int index = 0; index < size; index++ ) {
-			Node *n = new Node( { "NULL", NULL }, NULL );
-			hashTable[index] = n;
-		}
-		for( T data : vdata ) {
-			int index = badGenerator( data.name );
-			Node *n = new Node( data, NULL );
-			if( hashTable[index]->kid.name.compare( "NULL" ) != 0 ) {
-				Node *roamer;
-				roamer = hashTable[index];
-				while( roamer->next != NULL ) {
-					roamer = roamer->next;
-				}
-				roamer->next = n;
-			}
-			else
-				hashTable[index] = n;
-		}
-	}
+void InitializeD2HashTable( vector<T> &vdata ) {
+for( int index = 0; index < size; index++ ) {
+Node *n = new Node( { "NULL", NULL }, NULL );
+hashTable[index] = n;
+}
+for( T data : vdata ) {
+int index = badGenerator( data.name );
+Node *n = new Node( data, NULL );
+if( hashTable[index]->kid.name.compare( "NULL" ) != 0 ) {
+Node *roamer;
+roamer = hashTable[index];
+while( roamer->next != NULL ) {
+roamer = roamer->next;
+}
+roamer->next = n;
+}
+else
+hashTable[index] = n;
+}
+}
 
-	int badGenerator( string str ) {
-		return str.length() % size;
-	}
+int badGenerator( string str ) {
+return str.length() % size;
+}
 
-	void Traverse( string str, int index ) {
-		if( index < size ) {
-			index++;
-			if( str.compare( "NULL" ) != 0 )
-				cout << str << endl;
-			Traverse( hashTable[index], index );
-		}
-	}
+void Traverse( string str, int index ) {
+if( index < size ) {
+index++;
+if( str.compare( "NULL" ) != 0 )
+cout << str << endl;
+Traverse( hashTable[index], index );
+}
+}
 
-	Student search( string name ) {
-		int i = badGenerator( name );
-		if( hashTable[i]->next == NULL )
-			return hashTable[i]->kid;
-		Node *roamer;
-		roamer = hashTable[i];
-		while( roamer->next != NULL ) {
-			roamer = roamer->next;
-		}
-		return roamer->kid;
+Student search( string name ) {
+int i = badGenerator( name );
+if( hashTable[i]->next == NULL )
+return hashTable[i]->kid;
+Node *roamer;
+roamer = hashTable[i];
+while( roamer->next != NULL ) {
+roamer = roamer->next;
+}
+return roamer->kid;
 
-	}
+}
 
-	void print() {
-		for( int i = 0; i < size; i++ ) {
-			Node *n = hashTable[i];
-			cout << n->kid.name << "    " << n->kid.studentId << ", ";
-			while( n->next != NULL ) {
-				n = n->next;
-				cout << n->kid.name << "    " << n->kid.studentId << ", ";
+void print() {
+for( int i = 0; i < size; i++ ) {
+Node *n = hashTable[i];
+cout << n->kid.name << "    " << n->kid.studentId << ", ";
+while( n->next != NULL ) {
+n = n->next;
+cout << n->kid.name << "    " << n->kid.studentId << ", ";
 
-			}
-			cout << endl;
-		}
-	}
+}
+cout << endl;
+}
+}
 };
-
+*/
 
 /*
 =======================================================================================
@@ -1167,30 +1193,30 @@ void Nikita()
 	system( "pause" );
 }
 
-
+/*
 void Dharma() {
-	DHashTable<Student> h( 5 );
-	//vector<Student> vec = {{ "Jimmy", 4 } };
-	vector<Student> vec = { { "Jimmy",    4 },
-	{ "Dharma",   3 },
-	{ "Anna",     2 },
-	{ "Nikita",   1 },
-	{ "Viktoria", 0 } };
-	h.InitializeHashTable( vec, false );
-	h.print();
-	//cout << h.cichelliSearch("Jimmy").studentId;
-	cin.get();
+DHashTable<Student> h( 5 );
+//vector<Student> vec = {{ "Jimmy", 4 } };
+vector<Student> vec = { { "Jimmy",    4 },
+{ "Dharma",   3 },
+{ "Anna",     2 },
+{ "Nikita",   1 },
+{ "Viktoria", 0 } };
+h.InitializeHashTable( vec, false );
+h.print();
+//cout << h.cichelliSearch("Jimmy").studentId;
+cin.get();
 
 
-	D2HashTable<Student> hh( 3 );
-	//vector<Student> vec = {{ "Jimmy", 4 } };
-	vector<Student> vecc = { { "ab", 4 },{ "cd", 2 },{ "sd", 2 } };
-	hh.InitializeD2HashTable( vecc );
-	hh.print();
-	cout << "Find Student : " << hh.search( "cd" ).getName() << hh.search( "cd" ).getID();
-	cin.get();
+D2HashTable<Student> hh( 3 );
+//vector<Student> vec = {{ "Jimmy", 4 } };
+vector<Student> vecc = { { "ab", 4 },{ "cd", 2 },{ "sd", 2 } };
+hh.InitializeD2HashTable( vecc );
+hh.print();
+cout << "Find Student : " << hh.search( "cd" ).getName() << hh.search( "cd" ).getID();
+cin.get();
 }
-
+*/
 void fibonacci_tester()
 
 {
