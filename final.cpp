@@ -3,7 +3,7 @@
 //  22CFinal
 //
 //  Created by E on 3/16/16.
-//  Copyright © 2016 E. All rights reserved.
+//  Copyright ï¿½ 2016 E. All rights reserved.
 //
 
 
@@ -189,6 +189,179 @@ public:
 /*
 =======================================================================================
 */
+
+
+/*
+ ====================================        Viktoriia    ===================================================
+ */
+
+class MyHashTable
+{
+public:
+    int key;
+    string value;
+    MyHashTable *next;
+    
+    MyHashTable()
+    {
+        key=0;
+        value="";
+        next=NULL;
+    }
+    
+    int hash()
+    {
+        return key; //getting the hash for the current element
+    }
+    
+    bool linearProbning(int key) //cheking if the key alreadstring exists into the table
+    {
+        return this->search(key) == "";
+    }
+    
+    void insert(int key, string value) //inserting new element et the end of the table via recursion
+    {
+        if (this->next == NULL)
+        {
+            this->next = new MyHashTable();
+            this->key = key;
+            this->value = value;
+            return;
+        }
+        
+        this->next->insert(key, value);
+    }
+    
+    void deleteAt(int key) //delete is a operator and can not be used as name of fucntion via recursion
+    {
+        if (this->next == NULL)
+        {
+            return;
+        }
+        
+        if (this->key == key)
+        {
+            //getting the data from the next element in other words removing the element
+            this->key = next->key;
+            this->value = next->value;
+            this->next = next->next;
+            return;
+        }
+        
+        this->next->deleteAt(key);
+    }
+    
+    string search(int k) //searching for name inside the hash table via recursion
+    {
+        if (this->key == k)
+        {
+            return this->value;
+        }
+        
+        if (this->next == NULL)
+        {
+            return "";
+        }
+        
+        return this->next->search(k);
+    }
+    
+    void displayTable() //displaying the whole table via recursion
+    {
+        if (this->next == NULL)
+        {
+            return;
+        }
+        
+        cout << key << '\t' << value << endl;
+        
+        next->displayTable();
+    }
+};
+
+//used for splitting the string since C++ dosent support splitting
+
+vector<string> &split(const string &s, char delim, vector<string> &elems) {
+    stringstream ss(s);
+    string item;
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+//used for splitting the string since C++ dosent support splitting
+
+vector<string> split(const string &s, char delim) {
+    vector<string> elems;
+    split(s, delim, elems);
+    return elems;
+}
+
+//cheking if string is integer
+
+bool isInteger(const string & s)
+{
+    if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) return false;
+    
+    char * p;
+    strtol(s.c_str(), &p, 10);
+    
+    return (*p == 0);
+}
+
+void Viktoriia() //function Test required
+{
+    ifstream fin("data_set_1.csv");
+    MyHashTable hash;
+    
+    //reading the file untill the end
+    while (!fin.eof())
+    {
+        string line;
+        getline(fin, line);
+        vector<string> parts = split(line, ',');
+        
+        if (parts.size() == 2)
+        {
+            if (isInteger(parts[0].c_str()))
+            {
+                int key = atoi(parts[0].c_str());
+                
+                if (hash.linearProbning(key)) //cheking if the key alreadstring exists into the table and passing if it does
+                {
+                    //filling the table
+                    hash.insert(key, parts[1]);
+                }
+            }
+        }
+    }
+    
+    int key;
+    
+    cout << "Please enter key to check - "; cin >> key; //prompting the user to enter key
+    string str = hash.search(key);
+    
+    if (str == "")
+    {
+        //if the key dosent exist we need proper error message
+        cout << "The key does not exist in the table!" << endl;
+    }
+    else
+    {
+        cout << "The corresponding student is - " << str << endl;
+    }
+    
+    cout << "Please enter key to delete - "; 
+    cin >> key; //prompting the user to enter key to delete
+    
+    hash.deleteAt(key); //deleting the elemtn
+    hash.displayTable(); //displaying the table
+}
+
+/*
+ ============================================================================================================
+ */
 
 
 /*
@@ -1016,13 +1189,170 @@ public:
 	}
 
 	int main( int argc, const char *argv[] ) 
-	
 	{
 		// insert code here...
+        
+        int choice1;
+        int choice2;
+        while (1) {
+            cout << "\n----------------------" << endl;
+            cout << "       The Hashers!" << endl;
+            cout << "\n----------------------" << endl;
+            cout << "1.Build the database!" << endl;
+            cout << "2.Insert a new student" << endl;
+            cout << "3.Display students" << endl;
+            cout << "4.Search for a student" << endl;
+            cout << "5.Exit" << endl;
+            cout << "Enter your choice: " << endl;
+            cin >> choice1;
+            switch (choice1)
+            {
+                case 1:
+                    cout << "\n----------------------" << endl;
+                    cout << "  The Hashers are building tables!" << endl;
+                    cout << "\n----------------------" << endl;
+                    cout << "1.Build using Direct Address" << endl;
+                    cout << "2.Build using Division" << endl;
+                    cout << "3.Build using Fibonacci" << endl;
+                    cout << "4.Build using Perfect" << endl;
+                    cout << "5.Build using Double Hashing" << endl;
+                    cout << "6.Build using Universal" << endl;
+                    cout << "7.Return " << endl;
+                    cout << "Enter your choice: " << endl;
+                    cin >> choice2;
+                    switch (choice2)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        break;
+                        
+                }
+                    break;
+                case 2:
+                    cout << "\n----------------------" << endl;
+                    cout << "  INSERT: " << endl;
+                    cout << "\n----------------------" << endl;
+                    cout << "1.Insert using Direct Address" << endl;
+                    cout << "2.Insert using Division" << endl;
+                    cout << "3.Insert using Fibonacci" << endl;
+                    cout << "4.Insert using Perfect" << endl;
+                    cout << "5.Insert using Double Hashing" << endl;
+                    cout << "6.Insert using Universal" << endl;
+                    cout << "7.Return " << endl;
+                    cout << "Enter your choice: " << endl;
+                    cin >> choice2;
+                    switch (choice2)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        break;
+                        
+                }
+                    
+                case 3:
+                    cout << "\n----------------------" << endl;
+                    cout << "  PRINT : " << endl;
+                    cout << "\n----------------------" << endl;
+                    cout << "1.Print using Direct Address" << endl;
+                    cout << "2.Print using Division" << endl;
+                    cout << "3.Print using Fibonacci" << endl;
+                    cout << "4.Print using Perfect" << endl;
+                    cout << "5.Print using Double Hashing" << endl;
+                    cout << "6.Print using Universal" << endl;
+                    cout << "7.Return " << endl;
+                    cout << "Enter your choice: " << endl;
+                    cin >> choice2;
+                    switch (choice2)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        break;
+                        
+                }
+                case 4:
+                    cout << "\n----------------------" << endl;
+                    cout << "  SEARCH: " << endl;
+                    cout << "\n----------------------" << endl;
+                    cout << "1.Search using Direct Address" << endl;
+                    cout << "2.Search using Division" << endl;
+                    cout << "3.Search using Fibonacci" << endl;
+                    cout << "4.Search using Perfect" << endl;
+                    cout << "5.Search using Double Hashing" << endl;
+                    cout << "6.Search using Universal" << endl;
+                    cout << "7.Return " << endl;
+                    cout << "Enter your choice: " << endl;
+                    cin >> choice2;
+                    switch (choice2)
+                {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        break;
+                        
+                }
+                case 5:
+                    exit(1);
+                default:
+                    cout << "\nEnter correct option\n";
+            }
+        }
+        
 		// Anna();
 		//    Jimmy();
 		//Nikita();
 		//Dharma();
+        //Viktoriia();
 
 		return 0;
 	}
