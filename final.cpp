@@ -72,7 +72,7 @@ public:
 
 	void search( int id ) {
 		int probe;
-		int i = 0;
+		unsigned int i = 0;
 		probe = ( hash( id ) + i * i ) % m;
 
 		for( int j = 0; i < table->size(); j++ ) {
@@ -93,7 +93,7 @@ public:
 
 	void print() {
 		auto i = table->size();
-		for( int x = 0; x < i; x++ ) {
+		for( unsigned int x = 0; x < i; x++ ) {
 			if( !( *table )[x].isEmpty )
 				cout << endl << " [ index : " << x << " | " << ( *table )[x].getName() << " , " << ( *table )[x].getID() <<
 				" ] " << endl;
@@ -157,7 +157,7 @@ public:
 
 	void remove( int id ) {
 		int probe;
-		int i = 0;
+		unsigned int i = 0;
 		probe = ( hash( id ) + i * i ) % m;
 
 		for( int j = 0; i < table->size(); j++ ) {
@@ -406,7 +406,7 @@ int HashFunc2( string str, int size ) {
 	unsigned int hash = 0;
 	unsigned int prime_one = 10103;
 	unsigned int prime_two = 49921;
-	for( int i = 0; i < str.length(); i++ ) {
+	for( unsigned int i = 0; i < str.length(); i++ ) {
 		hash = hash * prime_one + str[i];
 		prime_one = prime_one * prime_two;
 	}
@@ -557,7 +557,7 @@ void Retrieve( J2HashTable *htable )
 
 long UniversalFunction( string text )
 {
-	int i;
+	// int i;
 	long  res = 0;
 	long M = ( Hsize * k );
 	int s = text.size();
@@ -882,7 +882,8 @@ void Anna()
 void Jimmy()
 {
 	string value;
-	int size, pos, i = 1;
+	int size, i = 1;
+	// int pos;
 	int choice;
 	JHashTable *htable;
 	while( 1 )
@@ -948,7 +949,13 @@ void Nikita()
 
 	reader.getData( table );
 
-	system( "pause" );
+	cout << "Number of collisions: ";
+
+	table.print_col();
+
+	cout << table.search( 56 ) << endl;
+
+	cout << table.search( 894 ) << endl;
 }
 
 /*
@@ -983,6 +990,7 @@ int main( int argc, const char *argv[] )
 {
 	// insert code here...
 
+	
 	int choice1;
 	int choice2;
 	while( 1 ) {
@@ -1138,12 +1146,15 @@ int main( int argc, const char *argv[] )
 			cout << "\nEnter correct option\n";
 		}
 	}
+	
 
 	// Anna();
 	//    Jimmy();
 	//Nikita();
 	//Dharma();
 	//Viktoriia();
+
+	system( "pause" );
 
 	return 0;
 };

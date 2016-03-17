@@ -76,7 +76,7 @@ public:
 	HashEntry<Key, Value>* HashEntry<Key, Value>::getNext() const
 	{
 		return next;
-	}   
+	}
 
 };
 
@@ -97,14 +97,14 @@ class FibonacciTable
 public:
 
 	FibonacciTable()
-		
+
 		/*size( DEFAULT_SIZE / 0.5 ),
 		A( get_golden_ratio() ),
 		col(0)
 		*/
 
 	{
-		size = (int) DEFAULT_SIZE * 2;
+		size = (int)DEFAULT_SIZE * 2;
 		A = get_golden_ratio();
 		col = 0;
 		fibonacci_table = new HashEntry<Key, Value>*[size];
@@ -143,7 +143,7 @@ public:
 	int hash( Key& key )
 
 	{
-		key = (int) floor( size * ( key * A - floor( key * A ) ) );
+		key = (int)floor( size * ( key * A - floor( key * A ) ) );
 
 		//key = floor( size * ( key * A % 1 ) );
 
@@ -222,25 +222,44 @@ public:
 };
 
 /*
+void Nikita()
+{
+DataReader<int, string> reader;
+
+FibonacciTable<int, string> table;
+
+reader.getData( table );
+
+cout << "Number of collisions: ";
+
+table.print_col();
+
+cout << table.search( 56 ) << endl;
+
+cout << table.search( 894 ) << endl;
+}
+*/
+
+/*
 int main()
 
 {
-	DataReader<int, string> reader;
+DataReader<int, string> reader;
 
-	FibonacciTable<int, string> table;
+FibonacciTable<int, string> table;
 
-	reader.getData( table );
+reader.getData( table );
 
-	cout << "Number of collisions: ";
-	
-	table.print_col();
+cout << "Number of collisions: ";
 
-	cout << table.search( 56 ) << endl;
+table.print_col();
 
-	cout << table.search( 894 ) << endl;
+cout << table.search( 56 ) << endl;
 
-	system( "pause" );
+cout << table.search( 894 ) << endl;
 
-	return 0;
+system( "pause" );
+
+return 0;
 }
 */
