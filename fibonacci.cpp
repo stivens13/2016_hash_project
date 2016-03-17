@@ -62,12 +62,7 @@ public:
 		Entry<Key, Value>::setKey( itemKey );
 		next = nullptr;
 	}  // end 
-	HashEntry( HashEntry<Key, Value>* nextEntryPtr )
-	{
-		Entry<Key, Value>::setItem( newEntry );
-		Entry<Key, Value>::setKey( itemKey );
-		next = nextEntryPtr;
-	}  // end 
+
 
 	void setNext( HashEntry<Key, Value>* nextEntryPtr )
 	{
@@ -155,7 +150,15 @@ public:
 	{
 		int hash_key = hash( key );
 
+		//if(fibonacci_table[hash_key] == nullptr /*&& key == fibonacci_table[hash_key]->getKey()*/ )
 		return fibonacci_table[hash_key]->getItem();
+
+		//else
+
+		{
+			//cout << "Your item is not in hash_table" << endl;
+			//return "";
+		}
 	}
 
 };
@@ -220,46 +223,3 @@ public:
 
 	}
 };
-
-/*
-void Nikita()
-{
-DataReader<int, string> reader;
-
-FibonacciTable<int, string> table;
-
-reader.getData( table );
-
-cout << "Number of collisions: ";
-
-table.print_col();
-
-cout << table.search( 56 ) << endl;
-
-cout << table.search( 894 ) << endl;
-}
-*/
-
-/*
-int main()
-
-{
-DataReader<int, string> reader;
-
-FibonacciTable<int, string> table;
-
-reader.getData( table );
-
-cout << "Number of collisions: ";
-
-table.print_col();
-
-cout << table.search( 56 ) << endl;
-
-cout << table.search( 894 ) << endl;
-
-system( "pause" );
-
-return 0;
-}
-*/

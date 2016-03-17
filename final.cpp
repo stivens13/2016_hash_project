@@ -956,6 +956,8 @@ void Nikita()
 	cout << table.search( 56 ) << endl;
 
 	cout << table.search( 894 ) << endl;
+
+	cout << table.search( 54654654654 ) << endl;
 }
 
 /*
@@ -990,167 +992,167 @@ int main( int argc, const char *argv[] )
 {
 	// insert code here...
 
-	
+	/*
 	int choice1;
 	int choice2;
 	while( 1 ) {
-		cout << "\n----------------------" << endl;
-		cout << "       The Hashers!" << endl;
-		cout << "\n----------------------" << endl;
-		cout << "1.Build the database!" << endl;
-		cout << "2.Insert a new student" << endl;
-		cout << "3.Display students" << endl;
-		cout << "4.Search for a student" << endl;
-		cout << "5.Exit" << endl;
-		cout << "Enter your choice: " << endl;
-		cin >> choice1;
-		switch( choice1 )
-		{
-		case 1:
-			cout << "\n----------------------" << endl;
-			cout << "  The Hashers are building tables!" << endl;
-			cout << "\n----------------------" << endl;
-			cout << "1.Build using Direct Address" << endl;
-			cout << "2.Build using Division" << endl;
-			cout << "3.Build using Fibonacci" << endl;
-			cout << "4.Build using Perfect" << endl;
-			cout << "5.Build using Double Hashing" << endl;
-			cout << "6.Build using Universal" << endl;
-			cout << "7.Return " << endl;
-			cout << "Enter your choice: " << endl;
-			cin >> choice2;
-			switch( choice2 )
-			{
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			default:
-				break;
+	cout << "\n----------------------" << endl;
+	cout << "       The Hashers!" << endl;
+	cout << "\n----------------------" << endl;
+	cout << "1.Build the database!" << endl;
+	cout << "2.Insert a new student" << endl;
+	cout << "3.Display students" << endl;
+	cout << "4.Search for a student" << endl;
+	cout << "5.Exit" << endl;
+	cout << "Enter your choice: " << endl;
+	cin >> choice1;
+	switch( choice1 )
+	{
+	case 1:
+	cout << "\n----------------------" << endl;
+	cout << "  The Hashers are building tables!" << endl;
+	cout << "\n----------------------" << endl;
+	cout << "1.Build using Direct Address" << endl;
+	cout << "2.Build using Division" << endl;
+	cout << "3.Build using Fibonacci" << endl;
+	cout << "4.Build using Perfect" << endl;
+	cout << "5.Build using Double Hashing" << endl;
+	cout << "6.Build using Universal" << endl;
+	cout << "7.Return " << endl;
+	cout << "Enter your choice: " << endl;
+	cin >> choice2;
+	switch( choice2 )
+	{
+	case 1:
+	break;
+	case 2:
+	break;
+	case 3:
+	break;
+	case 4:
+	break;
+	case 5:
+	break;
+	case 6:
+	break;
+	case 7:
+	break;
+	default:
+	break;
 
-			}
-			break;
-		case 2:
-			cout << "\n----------------------" << endl;
-			cout << "  INSERT: " << endl;
-			cout << "\n----------------------" << endl;
-			cout << "1.Insert using Direct Address" << endl;
-			cout << "2.Insert using Division" << endl;
-			cout << "3.Insert using Fibonacci" << endl;
-			cout << "4.Insert using Perfect" << endl;
-			cout << "5.Insert using Double Hashing" << endl;
-			cout << "6.Insert using Universal" << endl;
-			cout << "7.Return " << endl;
-			cout << "Enter your choice: " << endl;
-			cin >> choice2;
-			switch( choice2 )
-			{
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			default:
-				break;
-
-			}
-
-		case 3:
-			cout << "\n----------------------" << endl;
-			cout << "  PRINT : " << endl;
-			cout << "\n----------------------" << endl;
-			cout << "1.Print using Direct Address" << endl;
-			cout << "2.Print using Division" << endl;
-			cout << "3.Print using Fibonacci" << endl;
-			cout << "4.Print using Perfect" << endl;
-			cout << "5.Print using Double Hashing" << endl;
-			cout << "6.Print using Universal" << endl;
-			cout << "7.Return " << endl;
-			cout << "Enter your choice: " << endl;
-			cin >> choice2;
-			switch( choice2 )
-			{
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			default:
-				break;
-
-			}
-		case 4:
-			cout << "\n----------------------" << endl;
-			cout << "  SEARCH: " << endl;
-			cout << "\n----------------------" << endl;
-			cout << "1.Search using Direct Address" << endl;
-			cout << "2.Search using Division" << endl;
-			cout << "3.Search using Fibonacci" << endl;
-			cout << "4.Search using Perfect" << endl;
-			cout << "5.Search using Double Hashing" << endl;
-			cout << "6.Search using Universal" << endl;
-			cout << "7.Return " << endl;
-			cout << "Enter your choice: " << endl;
-			cin >> choice2;
-			switch( choice2 )
-			{
-			case 1:
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
-			case 7:
-				break;
-			default:
-				break;
-
-			}
-		case 5:
-			exit( 1 );
-		default:
-			cout << "\nEnter correct option\n";
-		}
 	}
-	
+	break;
+	case 2:
+	cout << "\n----------------------" << endl;
+	cout << "  INSERT: " << endl;
+	cout << "\n----------------------" << endl;
+	cout << "1.Insert using Direct Address" << endl;
+	cout << "2.Insert using Division" << endl;
+	cout << "3.Insert using Fibonacci" << endl;
+	cout << "4.Insert using Perfect" << endl;
+	cout << "5.Insert using Double Hashing" << endl;
+	cout << "6.Insert using Universal" << endl;
+	cout << "7.Return " << endl;
+	cout << "Enter your choice: " << endl;
+	cin >> choice2;
+	switch( choice2 )
+	{
+	case 1:
+	break;
+	case 2:
+	break;
+	case 3:
+	break;
+	case 4:
+	break;
+	case 5:
+	break;
+	case 6:
+	break;
+	case 7:
+	break;
+	default:
+	break;
+
+	}
+
+	case 3:
+	cout << "\n----------------------" << endl;
+	cout << "  PRINT : " << endl;
+	cout << "\n----------------------" << endl;
+	cout << "1.Print using Direct Address" << endl;
+	cout << "2.Print using Division" << endl;
+	cout << "3.Print using Fibonacci" << endl;
+	cout << "4.Print using Perfect" << endl;
+	cout << "5.Print using Double Hashing" << endl;
+	cout << "6.Print using Universal" << endl;
+	cout << "7.Return " << endl;
+	cout << "Enter your choice: " << endl;
+	cin >> choice2;
+	switch( choice2 )
+	{
+	case 1:
+	break;
+	case 2:
+	break;
+	case 3:
+	break;
+	case 4:
+	break;
+	case 5:
+	break;
+	case 6:
+	break;
+	case 7:
+	break;
+	default:
+	break;
+
+	}
+	case 4:
+	cout << "\n----------------------" << endl;
+	cout << "  SEARCH: " << endl;
+	cout << "\n----------------------" << endl;
+	cout << "1.Search using Direct Address" << endl;
+	cout << "2.Search using Division" << endl;
+	cout << "3.Search using Fibonacci" << endl;
+	cout << "4.Search using Perfect" << endl;
+	cout << "5.Search using Double Hashing" << endl;
+	cout << "6.Search using Universal" << endl;
+	cout << "7.Return " << endl;
+	cout << "Enter your choice: " << endl;
+	cin >> choice2;
+	switch( choice2 )
+	{
+	case 1:
+	break;
+	case 2:
+	break;
+	case 3:
+	break;
+	case 4:
+	break;
+	case 5:
+	break;
+	case 6:
+	break;
+	case 7:
+	break;
+	default:
+	break;
+
+	}
+	case 5:
+	exit( 1 );
+	default:
+	cout << "\nEnter correct option\n";
+	}
+	}
+	*/
 
 	// Anna();
 	//    Jimmy();
-	//Nikita();
+	Nikita();
 	//Dharma();
 	//Viktoriia();
 
