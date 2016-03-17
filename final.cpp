@@ -1,16 +1,13 @@
-//
-//  main.cpp
-//  22CFinal
-//
-//  Created by E on 3/16/16.
-//  Copyright � 2016 E. All rights reserved.
-//
-
-
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include <memory>
+#include <iomanip>
+#include <cstdlib>
+#include <list>
+#include <math.h>
 
 auto k = 7919;
 auto a = 321;
@@ -18,6 +15,9 @@ auto b = 43112;
 auto Hsize = 1009;
 auto BLANK = " ";
 auto MIN_TABLE_SIZE = 100;
+
+const int DEFAULT_SIZE = 1000;
+const double W = pow( 2, 32 );
 
 
 using namespace std;
@@ -204,9 +204,9 @@ public:
     
     MyHashTable()
     {
-        key=0;
-        value="";
-        next=NULL;
+        key = 0;
+        value = "";
+        next = NULL;
     }
     
     int hash()
@@ -214,14 +214,14 @@ public:
         return key; //getting the hash for the current element
     }
     
-    bool linearProbning(int key) //cheking if the key alreadstring exists into the table
+    bool linearProbning( int key ) //cheking if the key alreadstring exists into the table
     {
-        return this->search(key) == "";
+        return this->search( key ) == "";
     }
     
-    void insert(int key, string value) //inserting new element et the end of the table via recursion
+    void insert( int key, string value ) //inserting new element et the end of the table via recursion
     {
-        if (this->next == NULL)
+        if( this->next == NULL )
         {
             this->next = new MyHashTable();
             this->key = key;
@@ -229,17 +229,17 @@ public:
             return;
         }
         
-        this->next->insert(key, value);
+        this->next->insert( key, value );
     }
     
-    void deleteAt(int key) //delete is a operator and can not be used as name of fucntion via recursion
+    void deleteAt( int key ) //delete is a operator and can not be used as name of fucntion via recursion
     {
-        if (this->next == NULL)
+        if( this->next == NULL )
         {
             return;
         }
         
-        if (this->key == key)
+        if( this->key == key )
         {
             //getting the data from the next element in other words removing the element
             this->key = next->key;
@@ -248,27 +248,27 @@ public:
             return;
         }
         
-        this->next->deleteAt(key);
+        this->next->deleteAt( key );
     }
     
-    string search(int k) //searching for name inside the hash table via recursion
+    string search( int k ) //searching for name inside the hash table via recursion
     {
-        if (this->key == k)
+        if( this->key == k )
         {
             return this->value;
         }
         
-        if (this->next == NULL)
+        if( this->next == NULL )
         {
             return "";
         }
         
-        return this->next->search(k);
+        return this->next->search( k );
     }
     
     void displayTable() //displaying the whole table via recursion
     {
-        if (this->next == NULL)
+        if( this->next == NULL )
         {
             return;
         }
@@ -281,57 +281,57 @@ public:
 
 //used for splitting the string since C++ dosent support splitting
 
-vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    stringstream ss(s);
+vector<string> &split( const string &s, char delim, vector<string> &elems ) {
+    stringstream ss( s );
     string item;
-    while (getline(ss, item, delim)) {
-        elems.push_back(item);
+    while( getline( ss, item, delim ) ) {
+        elems.push_back( item );
     }
     return elems;
 }
 
 //used for splitting the string since C++ dosent support splitting
 
-vector<string> split(const string &s, char delim) {
+vector<string> split( const string &s, char delim ) {
     vector<string> elems;
-    split(s, delim, elems);
+    split( s, delim, elems );
     return elems;
 }
 
 //cheking if string is integer
 
-bool isInteger(const string & s)
+bool isInteger( const string & s )
 {
-    if (s.empty() || ((!isdigit(s[0])) && (s[0] != '-') && (s[0] != '+'))) return false;
+    if( s.empty() || ( ( !isdigit( s[0] ) ) && ( s[0] != '-' ) && ( s[0] != '+' ) ) ) return false;
     
     char * p;
-    strtol(s.c_str(), &p, 10);
+    strtol( s.c_str(), &p, 10 );
     
-    return (*p == 0);
+    return ( *p == 0 );
 }
 
 void Viktoriia() //function Test required
 {
-    ifstream fin("data_set_1.csv");
+    ifstream fin( "data_set_1.csv" );
     MyHashTable hash;
     
     //reading the file untill the end
-    while (!fin.eof())
+    while( !fin.eof() )
     {
         string line;
-        getline(fin, line);
-        vector<string> parts = split(line, ',');
+        getline( fin, line );
+        vector<string> parts = split( line, ',' );
         
-        if (parts.size() == 2)
+        if( parts.size() == 2 )
         {
-            if (isInteger(parts[0].c_str()))
+            if( isInteger( parts[0].c_str() ) )
             {
-                int key = atoi(parts[0].c_str());
+                int key = atoi( parts[0].c_str() );
                 
-                if (hash.linearProbning(key)) //cheking if the key alreadstring exists into the table and passing if it does
+                if( hash.linearProbning( key ) ) //cheking if the key alreadstring exists into the table and passing if it does
                 {
                     //filling the table
-                    hash.insert(key, parts[1]);
+                    hash.insert( key, parts[1] );
                 }
             }
         }
@@ -340,9 +340,9 @@ void Viktoriia() //function Test required
     int key;
     
     cout << "Please enter key to check - "; cin >> key; //prompting the user to enter key
-    string str = hash.search(key);
+    string str = hash.search( key );
     
-    if (str == "")
+    if( str == "" )
     {
         //if the key dosent exist we need proper error message
         cout << "The key does not exist in the table!" << endl;
@@ -355,7 +355,7 @@ void Viktoriia() //function Test required
     cout << "Please enter key to delete - ";
     cin >> key; //prompting the user to enter key to delete
     
-    hash.deleteAt(key); //deleting the elemtn
+    hash.deleteAt( key ); //deleting the elemtn
     hash.displayTable(); //displaying the table
 }
 
@@ -615,17 +615,18 @@ class HashEntry: public Entry<Key, Value>
 {
 private:
     
-    Entry<Key, Value> entry;
+    //Entry<Key, Value> entry;
     HashEntry<Key, Value>* next;
     
 public:
+    
+    //HashEntry(): next(nullptr) {}
     
     HashEntry()
     {
         Entry<Key, Value>();
         next = nullptr;
     }  // end
-    
     HashEntry( Key itemKey, Value newEntry )
     {
         Entry<Key, Value>::setItem( newEntry );
@@ -633,19 +634,21 @@ public:
         next = nullptr;
     }  // end
     
-    HashEntry( HashEntry<Key, Value>* nextEntryPtr )
-    {
-        Entry<Key, Value>::setItem( newEntry );
-        Entry<Key, Value>::setKey( itemKey );
-        next = nextEntryPtr;
-    }  // end
+    /*
+     HashEntry( HashEntry<Key, Value>* nextEntryPtr )
+     {
+     Entry<Key, Value>::setItem( newEntry );
+     Entry<Key, Value>::setKey( itemKey );
+     next = nextEntryPtr;
+     }  // end*/
+    
     
     void setNext( HashEntry<Key, Value>* nextEntryPtr )
     {
         next = nextEntryPtr;
     }  // end
     
-    HashEntry<Key, Value>* HashEntry<Key, Value>::getNext() const
+    HashEntry<Key, Value>* getNext() const
     {
         return next;
     }  // end
@@ -653,31 +656,52 @@ public:
 };
 
 template<typename Key, typename Value>
-class FibonacciTable
+class FibonacciTable// : public FibonacciTableInterface<T,R>
 
 {
     HashEntry<Key, Value>** fibonacci_table;
     
-    int current_size;
+    //int size_min;
+    
+    int size;
     
     double A;
     
     int item_count;
     
+    int col;
+    
 public:
     
-    FibonacciTable(): current_size( 0 ), A( get_golden_ratio() ) {}
+    FibonacciTable()
+    
+    /*size( DEFAULT_SIZE / 0.5 ),
+     A( get_golden_ratio() ),
+     col(0)
+     */
+    
+    {
+        size = (int)DEFAULT_SIZE * 2;
+        //size = DEFAULT_SIZE;
+        A = get_golden_ratio();
+        col = 0;
+        fibonacci_table = new HashEntry<Key, Value>*[size];
+        for( int c = 0; c < size; c++ )
+            fibonacci_table[c] = nullptr;
+        
+        cout << "Size: " << size << endl;
+    }
     
     void insert( Key& a_key, Value& object )
     
     {
+        
         HashEntry<Key, Value>* nu = new HashEntry<Key, Value>( a_key, object );
         
-        a_key = hash( a_key );
+        int hashed_key = hash( a_key );
         
-        
-        if( fibonacci_table[a_key] == nullptr )
-            fibonacci_table[a_key] = nu;
+        if( fibonacci_table[hashed_key] == nullptr )
+            fibonacci_table[hashed_key] = nu;
         
         else
             
@@ -688,6 +712,8 @@ public:
         }
     }
     
+    void print_col() { cout << col << endl; }
+    
     bool is_empty() { return item_count == 0; }
     
     double get_golden_ratio() { return ( sqrt( 5 ) - 1 ) / 2; }
@@ -696,6 +722,8 @@ public:
     
     {
         key = (int)floor( size * ( key * A - floor( key * A ) ) );
+        
+        //key = floor( size * ( key * A % 1 ) );
         
         return key;
     }
@@ -771,289 +799,268 @@ public:
  ====================================        Dharma        ===================================================
  */
 
-template <typename T>
-class DHashTable
-{
-    T* hashTable;
-    int size;
-    int collisions;
-    int values[256];
-    int valuesCount[256];
-    vector<Student> collided;
-    
-public:
-    DHashTable( int size1 )
-    {
-        size = size1;
-        hashTable = new T[size + 1];
-        for( int i = 0; i < 256; i++ )
-        {
-            values[i] = 1;
-        }
-    }
-    ~DHashTable() { delete[] hashTable; }
-    void GetData( vector<T>& vdata, bool easy )
-    {
-        InitializeHashTable( vdata, easy );
-        CheckCollisions();
-    }
-    
-    // If "easy" = true, this uses the hardcoded perfect hashing function
-    int InitializeHashTable( vector<T>& vdata, bool easy )
-    {
-        for( int index = 0; index < size; index++ )
-        {
-            hashTable[index] = { "NULL", NULL };
-        }
-        
-        if( !easy )
-        {
-            setValues( vdata );
-            return -1;
-        }
-        for( T data : vdata )
-        {
-            int index = easyHashGenerator( data.name );
-            //cout << "INDEX " << index << " item " << hashTable[index] << endl;
-            if( hashTable[index].name.compare( "NULL" ) != 0 )
-            {
-                collisions++;
-                collided.push_back( hashTable[index] );
-            }
-            hashTable[index] = data;
-        }
-        return collisions;
-    }
-    double CheckCollisions()
-    {
-        double percent = double( collisions ) / double( size ) * 100;
-        cout << "Percentage of collisions " << percent << "%" << endl;
-        return percent;
-    }
-    
-    //The "easy" hash generator
-    int easyHashGenerator( string str )
-    {
-        if( str == "Jimmy" )
-            return 4;
-        else if( str == "Dharma" )
-            return 3;
-        else if( str == "Anna" )
-            return 2;
-        else if( str == "Nikita" )
-            return 1;
-        else if( str == "Viktoria" )
-            return 0;
-        return 5;
-    }
-    
-    //This is the "smarter" perfect hashing function/searching function I wrote
-    Student cichelliSearch( string name )
-    {
-        return hashTable[calculateKey( name )];
-    }
-    
-    //This is for the "dumber"" one
-    Student easySearch( string name )
-    {
-        return hashTable[easyHashGenerator( name )];
-    }
-    void Traverse( string str, int index )
-    {
-        if( index < size )
-        {
-            index++;
-            if( str.compare( "NULL" ) != 0 )
-                cout << str << endl;
-            Traverse( hashTable[index], index );
-        }
-    }
-    string operator[] ( int index )
-    {
-        return hashTable[index];
-    }
-    int hashInsert( string str )
-    {
-        int i = 0;
-        do
-        {
-            if( hashTable[key].compare( "NULL" ) == 0 )
-            {
-                hashTable[i] = str;
-                return i;
-            }
-            else
-                i++;
-        } while( i < size );
-        return -1;
-    }
-    bool hashRemove( string str )
-    {
-        int i = 0;
-        do
-        {
-            if( hashTable[i].compare( str ) == 0 )
-            {
-                hashTable[i] = "NULL";
-                return true;
-            }
-            else
-                i++;
-        } while( i < size );
-        return false;
-    }
-    void printCollisions()
-    {
-        for( int i = 0; i < collided.size(); i++ )
-        {
-            cout << collided[i] << "  ";
-        }
-        cout << endl;
-    }
-    void print()
-    {
-        for( int i = 0; i < size; i++ )
-        {
-            cout << hashTable[i].name << "   " << hashTable[i].studentId << endl;
-        }
-    }
-    
-    int calculateKey( string str )
-    {
-        int key = 0;
-        for( char c : str )
-        {
-            key += values[c];
-        }
-        return key % size;
-    }
-    void setValues( vector<T> vec )
-    {
-        for( T data : vec )
-        {
-            for( char c : data.name )
-            {
-                valuesCount[c] ++;
-            }
-        }
-        
-        for( T data : vec )
-        {
-            int key = calculateKey( data.name );
-            //cout << "HEREH " << key << endl;
-            
-            if( hashTable[key].name == "NULL" )
-            {
-                hashTable[key] = data;
-            }
-            else
-            {
-                int i;
-                while( hashTable[key].name != "NULL" )
-                {
-                    i = 0;
-                    //check the letter does not affect any other words
-                    while( valuesCount[data.name.at( i )] != 1 )
-                    {
-                        i++;
-                    }
-                    values[data.name.at( i )] ++;
-                    key = calculateKey( data.name );
-                }
-                hashTable[key] = data;
-            }
-            
-        }
-        
-    }
-};
-
-template <typename T>
-class D2HashTable
-{
-private:
-    
-    Node** hashTable;
-    int values[256];
-    int size;
-public:
-    D2HashTable( int size1 ) {
-        size = size1;
-        hashTable = new Node *[size + 1];
-    }
-    
-    ~D2HashTable() { delete[] hashTable; }
-    
-    void GetData( vector<T> &vdata, bool easy ) {
-        InitializeD2HashTable( vdata, easy );
-        CheckCollisions();
-    }
-    
-    void InitializeD2HashTable( vector<T> &vdata ) {
-        for( int index = 0; index < size; index++ ) {
-            Node *n = new Node( { "NULL", NULL }, NULL );
-            hashTable[index] = n;
-        }
-        for( T data : vdata ) {
-            int index = badGenerator( data.name );
-            Node *n = new Node( data, NULL );
-            if( hashTable[index]->kid.name.compare( "NULL" ) != 0 ) {
-                Node *roamer;
-                roamer = hashTable[index];
-                while( roamer->next != NULL ) {
-                    roamer = roamer->next;
-                }
-                roamer->next = n;
-            }
-            else
-                hashTable[index] = n;
-        }
-    }
-    
-    int badGenerator( string str ) {
-        return str.length() % size;
-    }
-    
-    void Traverse( string str, int index ) {
-        if( index < size ) {
-            index++;
-            if( str.compare( "NULL" ) != 0 )
-                cout << str << endl;
-            Traverse( hashTable[index], index );
-        }
-    }
-    
-    Student search( string name ) {
-        int i = badGenerator( name );
-        if( hashTable[i]->next == NULL )
-            return hashTable[i]->kid;
-        Node *roamer;
-        roamer = hashTable[i];
-        while( roamer->next != NULL ) {
-            roamer = roamer->next;
-        }
-        return roamer->kid;
-        
-    }
-    
-    void print() {
-        for( int i = 0; i < size; i++ ) {
-            Node *n = hashTable[i];
-            cout << n->kid.name << "    " << n->kid.studentId << ", ";
-            while( n->next != NULL ) {
-                n = n->next;
-                cout << n->kid.name << "    " << n->kid.studentId << ", ";
-                
-            }
-            cout << endl;
-        }
-    }
-};
-
+/*
+ template <typename T>
+ class DHashTable
+ {
+ T* hashTable;
+ int size;
+ int collisions;
+ int values[256];
+ int valuesCount[256];
+ vector<Student> collided;
+ public:
+ DHashTable( int size1 )
+ {
+ size = size1;
+ hashTable = new T[size + 1];
+ for( int i = 0; i < 256; i++ )
+ {
+ values[i] = 1;
+ }
+ }
+ ~DHashTable() { delete[] hashTable; }
+ void GetData( vector<T>& vdata, bool easy )
+ {
+ InitializeHashTable( vdata, easy );
+ CheckCollisions();
+ }
+ // If "easy" = true, this uses the hardcoded perfect hashing function
+ int InitializeHashTable( vector<T>& vdata, bool easy )
+ {
+ for( int index = 0; index < size; index++ )
+ {
+ hashTable[index] = { "NULL", NULL };
+ }
+ if( !easy )
+ {
+ setValues( vdata );
+ return -1;
+ }
+ for( T data : vdata )
+ {
+ int index = easyHashGenerator( data.name );
+ //cout << "INDEX " << index << " item " << hashTable[index] << endl;
+ if( hashTable[index].name.compare( "NULL" ) != 0 )
+ {
+ collisions++;
+ collided.push_back( hashTable[index] );
+ }
+ hashTable[index] = data;
+ }
+ return collisions;
+ }
+ double CheckCollisions()
+ {
+ double percent = double( collisions ) / double( size ) * 100;
+ cout << "Percentage of collisions " << percent << "%" << endl;
+ return percent;
+ }
+ //The "easy" hash generator
+ int easyHashGenerator( string str )
+ {
+ if( str == "Jimmy" )
+ return 4;
+ else if( str == "Dharma" )
+ return 3;
+ else if( str == "Anna" )
+ return 2;
+ else if( str == "Nikita" )
+ return 1;
+ else if( str == "Viktoria" )
+ return 0;
+ return 5;
+ }
+ //This is the "smarter" perfect hashing function/searching function I wrote
+ Student cichelliSearch( string name )
+ {
+ return hashTable[calculateKey( name )];
+ }
+ //This is for the "dumber"" one
+ Student easySearch( string name )
+ {
+ return hashTable[easyHashGenerator( name )];
+ }
+ void Traverse( string str, int index )
+ {
+ if( index < size )
+ {
+ index++;
+ if( str.compare( "NULL" ) != 0 )
+ cout << str << endl;
+ Traverse( hashTable[index], index );
+ }
+ }
+ string operator[] ( int index )
+ {
+ return hashTable[index];
+ }
+ int hashInsert( string str )
+ {
+ int i = 0;
+ do
+ {
+ if( hashTable[key].compare( "NULL" ) == 0 )
+ {
+ hashTable[i] = str;
+ return i;
+ }
+ else
+ i++;
+ } while( i < size );
+ return -1;
+ }
+ bool hashRemove( string str )
+ {
+ int i = 0;
+ do
+ {
+ if( hashTable[i].compare( str ) == 0 )
+ {
+ hashTable[i] = "NULL";
+ return true;
+ }
+ else
+ i++;
+ } while( i < size );
+ return false;
+ }
+ void printCollisions()
+ {
+ for( int i = 0; i < collided.size(); i++ )
+ {
+ cout << collided[i] << "  ";
+ }
+ cout << endl;
+ }
+ void print()
+ {
+ for( int i = 0; i < size; i++ )
+ {
+ cout << hashTable[i].name << "   " << hashTable[i].studentId << endl;
+ }
+ }
+ int calculateKey( string str )
+ {
+ int key = 0;
+ for( char c : str )
+ {
+ key += values[c];
+ }
+ return key % size;
+ }
+ void setValues( vector<T> vec )
+ {
+ for( T data : vec )
+ {
+ for( char c : data.name )
+ {
+ valuesCount[c] ++;
+ }
+ }
+ for( T data : vec )
+ {
+ int key = calculateKey( data.name );
+ //cout << "HEREH " << key << endl;
+ if( hashTable[key].name == "NULL" )
+ {
+ hashTable[key] = data;
+ }
+ else
+ {
+ int i;
+ while( hashTable[key].name != "NULL" )
+ {
+ i = 0;
+ //check the letter does not affect any other words
+ while( valuesCount[data.name.at( i )] != 1 )
+ {
+ i++;
+ }
+ values[data.name.at( i )] ++;
+ key = calculateKey( data.name );
+ }
+ hashTable[key] = data;
+ }
+ }
+ }
+ };
+ template <typename T>
+ class D2HashTable
+ {
+ private:
+ Node** hashTable;
+ int values[256];
+ int size;
+ public:
+ D2HashTable( int size1 ) {
+ size = size1;
+ hashTable = new Node *[size + 1];
+ }
+ ~D2HashTable() { delete[] hashTable; }
+ void GetData( vector<T> &vdata, bool easy ) {
+ InitializeD2HashTable( vdata, easy );
+ CheckCollisions();
+ }
+ void InitializeD2HashTable( vector<T> &vdata ) {
+ for( int index = 0; index < size; index++ ) {
+ Node *n = new Node( { "NULL", NULL }, NULL );
+ hashTable[index] = n;
+ }
+ for( T data : vdata ) {
+ int index = badGenerator( data.name );
+ Node *n = new Node( data, NULL );
+ if( hashTable[index]->kid.name.compare( "NULL" ) != 0 ) {
+ Node *roamer;
+ roamer = hashTable[index];
+ while( roamer->next != NULL ) {
+ roamer = roamer->next;
+ }
+ roamer->next = n;
+ }
+ else
+ hashTable[index] = n;
+ }
+ }
+ int badGenerator( string str ) {
+ return str.length() % size;
+ }
+ void Traverse( string str, int index ) {
+ if( index < size ) {
+ index++;
+ if( str.compare( "NULL" ) != 0 )
+ cout << str << endl;
+ Traverse( hashTable[index], index );
+ }
+ }
+ Student search( string name ) {
+ int i = badGenerator( name );
+ if( hashTable[i]->next == NULL )
+ return hashTable[i]->kid;
+ Node *roamer;
+ roamer = hashTable[i];
+ while( roamer->next != NULL ) {
+ roamer = roamer->next;
+ }
+ return roamer->kid;
+ }
+ void print() {
+ for( int i = 0; i < size; i++ ) {
+ Node *n = hashTable[i];
+ cout << n->kid.name << "    " << n->kid.studentId << ", ";
+ while( n->next != NULL ) {
+ n = n->next;
+ cout << n->kid.name << "    " << n->kid.studentId << ", ";
+ }
+ cout << endl;
+ }
+ }
+ };
+ */
 
 /*
-	=======================================================================================
-	*/
+ =======================================================================================
+ */
 
 void readData( HashTable &a, string filename ) {
     string line;
@@ -1158,30 +1165,28 @@ void Nikita()
     system( "pause" );
 }
 
-
-void Dharma() {
-    DHashTable<Student> h( 5 );
-    //vector<Student> vec = {{ "Jimmy", 4 } };
-    vector<Student> vec = { { "Jimmy",    4 },
-        { "Dharma",   3 },
-        { "Anna",     2 },
-        { "Nikita",   1 },
-        { "Viktoria", 0 } };
-    h.InitializeHashTable( vec, false );
-    h.print();
-    //cout << h.cichelliSearch("Jimmy").studentId;
-    cin.get();
-    
-    
-    D2HashTable<Student> hh( 3 );
-    //vector<Student> vec = {{ "Jimmy", 4 } };
-    vector<Student> vecc = { { "ab", 4 },{ "cd", 2 },{ "sd", 2 } };
-    hh.InitializeD2HashTable( vecc );
-    hh.print();
-    cout << "Find Student : " << hh.search( "cd" ).getName() << hh.search( "cd" ).getID();
-    cin.get();
-}
-
+/*
+ void Dharma() {
+ DHashTable<Student> h( 5 );
+ //vector<Student> vec = {{ "Jimmy", 4 } };
+ vector<Student> vec = { { "Jimmy",    4 },
+ { "Dharma",   3 },
+ { "Anna",     2 },
+ { "Nikita",   1 },
+ { "Viktoria", 0 } };
+ h.InitializeHashTable( vec, false );
+ h.print();
+ //cout << h.cichelliSearch("Jimmy").studentId;
+ cin.get();
+ D2HashTable<Student> hh( 3 );
+ //vector<Student> vec = {{ "Jimmy", 4 } };
+ vector<Student> vecc = { { "ab", 4 },{ "cd", 2 },{ "sd", 2 } };
+ hh.InitializeD2HashTable( vecc );
+ hh.print();
+ cout << "Find Student : " << hh.search( "cd" ).getName() << hh.search( "cd" ).getID();
+ cin.get();
+ }
+ */
 void fibonacci_tester()
 
 {
@@ -1194,7 +1199,7 @@ int main( int argc, const char *argv[] )
     
     int choice1;
     int choice2;
-    while (1) {
+    while( 1 ) {
         cout << "\n----------------------" << endl;
         cout << "       The Hashers!" << endl;
         cout << "\n----------------------" << endl;
@@ -1205,7 +1210,7 @@ int main( int argc, const char *argv[] )
         cout << "5.Exit" << endl;
         cout << "Enter your choice: " << endl;
         cin >> choice1;
-        switch (choice1)
+        switch( choice1 )
         {
             case 1:
                 cout << "\n----------------------" << endl;
@@ -1220,7 +1225,7 @@ int main( int argc, const char *argv[] )
                 cout << "7.Return " << endl;
                 cout << "Enter your choice: " << endl;
                 cin >> choice2;
-                switch (choice2)
+                switch( choice2 )
             {
                 case 1:
                     break;
@@ -1254,7 +1259,7 @@ int main( int argc, const char *argv[] )
                 cout << "7.Return " << endl;
                 cout << "Enter your choice: " << endl;
                 cin >> choice2;
-                switch (choice2)
+                switch( choice2 )
             {
                 case 1:
                     break;
@@ -1288,7 +1293,7 @@ int main( int argc, const char *argv[] )
                 cout << "7.Return " << endl;
                 cout << "Enter your choice: " << endl;
                 cin >> choice2;
-                switch (choice2)
+                switch( choice2 )
             {
                 case 1:
                     break;
@@ -1321,7 +1326,7 @@ int main( int argc, const char *argv[] )
                 cout << "7.Return " << endl;
                 cout << "Enter your choice: " << endl;
                 cin >> choice2;
-                switch (choice2)
+                switch( choice2 )
             {
                 case 1:
                     break;
@@ -1342,7 +1347,7 @@ int main( int argc, const char *argv[] )
                     
             }
             case 5:
-                exit(1);
+                exit( 1 );
             default:
                 cout << "\nEnter correct option\n";
         }
@@ -1355,4 +1360,4 @@ int main( int argc, const char *argv[] )
     //Viktoriia();
     
     return 0;
-}
+};
