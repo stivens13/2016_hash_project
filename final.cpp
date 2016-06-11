@@ -261,7 +261,7 @@ public:
         this->next->insert( key, value );
     }
     
-    void deleteAt( int key ) //delete is a operator and can not be used as name of fucntion via recursion
+    void deleteAt( int key ) //delete is a operator and can not be used as name of function via recursion
     {
         if( this->next == NULL )
         {
